@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* styles/globals.css */
+.star5_rating::before,
+.star5_rating::after {
+  content: '★★★★★';
+}
+
+.star5_rating::before {
+  color: inherit; /* 継承されたグレーカラー */
+}
+
+.star5_rating::after {
+  color: var(--tw-text-opacity, 1) #ffcf32; /* イエローカラー */
+}
