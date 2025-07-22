@@ -71,3 +71,81 @@ body {
     opacity: 0;
   }
 }
+
+/* ... 既存のCSS ... */
+
+/* 人との出会いを表現するアニメーション (修正版) */
+.line-left,
+.line-right {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  /* 線の太さ */
+  background-color: #f97316;
+  /* 線の色 (オレンジ) */
+  width: 50%;
+}
+
+.line-left {
+  left: 0;
+  /* 最初は左端の外側に見えないように配置 */
+  transform: translateX(-100%);
+  animation: move-left 5s ease-in-out infinite;
+}
+
+.line-right {
+  right: 0;
+  /* 最初は右端の外側に見えないように配置 */
+  transform: translateX(100%);
+  animation: move-right 5s ease-in-out infinite;
+}
+
+/* 左から来る線のアニメーション */
+@keyframes move-left {
+  0% {
+    transform: translateX(-100%);
+    /* 左端の外側からスタート */
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(100%);
+    /* 右端（画面中央）まで移動 */
+  }
+
+  50% {
+    transform: translateX(100%) translateY(0);
+    /* 中央で一瞬止まる */
+  }
+
+  80%, 100% {
+    transform: translateX(100%) translateY(40px);
+    /* 下に移動しながら消える */
+    opacity: 0;
+  }
+}
+
+/* 右から来る線のアニメーション */
+@keyframes move-right {
+  0% {
+    transform: translateX(100%);
+    /* 右端の外側からスタート */
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(-100%);
+    /* 左端（画面中央）まで移動 */
+  }
+
+  50% {
+    transform: translateX(-100%) translateY(0);
+    /* 中央で一瞬止まる */
+  }
+
+  80%, 100% {
+    transform: translateX(-100%) translateY(-40px);
+    /* 上に移動しながら消える */
+    opacity: 0;
+  }
+}
