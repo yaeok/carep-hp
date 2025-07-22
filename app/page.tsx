@@ -3,11 +3,16 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic' // dynamic をインポート
 
 import Footer from '@/components/Footer/Footer'
 import { Nav } from '@/components/nav'
-import BubbleAnimation from '@/components/BubbleAnimation/BubbleAnimation'
 
+// dynamic import を使って、クライアントサイドでのみコンポーネントを読み込む
+const BubbleAnimation = dynamic(
+  () => import('@/components/BubbleAnimation/BubbleAnimation'),
+  { ssr: false }
+)
 // お知らせのダミーデータ
 const newsItems = [
   {
@@ -164,24 +169,53 @@ export default function Home() {
 
       <Nav />
 
-      <main className='pt-20 relative z-10'>
+      <main className='relative z-10'>
         {/* Hero Section */}
-        <section className='py-20 md:py-32 h-screen'>
-          <div className='container mx-auto px-4 flex flex-col items-center justify-center gap-12'>
-            <div className='text-center flex-1'>
-              <h1 className='text-4xl md:text-6xl font-extrabold text-gray-800 leading-tight'>
-                <span className='block'>誰でも、いつでも、</span>
-                <span className='block text-orange-500'>学びの可能性を。</span>
-              </h1>
-              <p className='mt-6 text-lg text-gray-600 max-w-xl mx-auto md:mx-0'>
-                私たちは、テクノロジーの力で、すべての人が持つ学習意欲を最大限に引き出し、自らの力で未来を切り拓くことを支援します。
-              </p>
-            </div>
+        <section className='py-20 md:py-32 h-screen flex items-center justify-center'>
+          <div className='container mx-auto px-4 flex flex-col items-center text-center flex-1 animate-fade-in-up gap-12'>
+            <h1 className='text-4xl md:text-6xl font-extrabold text-gray-800 leading-tight'>
+              誰でも、いつでも、
+              <span className='text-orange-500 block md:inline'>
+                学びの可能性を。
+              </span>
+            </h1>
+            <p className='text-lg text-gray-600 mx-auto md:mx-0'>
+              私たちは、テクノロジーの力で、すべての人が持つ学習意欲を最大限に引き出し、自らの力で未来を切り拓くことを支援します。
+            </p>
           </div>
         </section>
 
+        {/* Philosophy Section */}
+        <section className='py-20 md:py-32 h-screen flex-row max-w-5xl mx-auto'>
+          <div className='flex-1 px-4 mx-auto'>
+            <div className=''>
+              <h2 className='text-3xl md:text-4xl font-extrabold text-gray-900 mb-6'>
+                <span className='font-bold text-orange-600'>私たち</span>
+                が目指す世界
+              </h2>
+              <div className='text-lg md:text-lg text-gray-700 leading-relaxed space-y-6'>
+                <p>人生は産まれながらにして不平等だ。</p>
+                <p>
+                  しかし、
+                  <span className='font-bold text-orange-600'>
+                    「学びの可能性」
+                  </span>
+                  があれば平等に近づけられるはず。
+                </p>
+                <p>自分の意志さえあれば。</p>
+                <p className='font-bold text-2xl pt-4'>
+                  学ぶことは自立すること。
+                  <br />
+                  人生を豊かにすること。
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className='flex-1'></div>
+        </section>
+
         {/* Values Section */}
-        <section className='bg-white/70 backdrop-blur-sm py-24'>
+        <section className='bg-white/30 backdrop-blur-sm md:h-screen flex items-center justify-center'>
           <div className='container mx-auto px-4'>
             <div className='text-center mb-16'>
               <h2 className='text-sm font-bold uppercase text-orange-500 tracking-widest'>
@@ -192,10 +226,11 @@ export default function Home() {
               </p>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto'>
-              {values.map((value) => (
+              {values.map((value, index) => (
                 <div
                   key={value.number}
-                  className='bg-orange-500 rounded-2xl p-8 text-white flex flex-col items-start shadow-lg transform hover:-translate-y-2 transition-transform duration-300'
+                  className='bg-orange-500 rounded-2xl p-8 text-white flex flex-col items-start shadow-lg transform hover:-translate-y-2 transition-transform duration-300 animate-scale-in'
+                  style={{ animationDelay: `${index * 150}ms` }}
                 >
                   <div className='flex items-center gap-4 mb-4'>
                     <div className='bg-white/20 p-3 rounded-full'>
@@ -219,33 +254,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Philosophy Section */}
-        <section className='py-24'>
-          <div className='container mx-auto px-4 relative'>
-            <div className='text-center max-w-3xl mx-auto'>
-              <h2 className='text-3xl md:text-4xl font-extrabold text-gray-900 mb-6'>
-                私たちの目指す世界
-              </h2>
-              <div className='text-lg md:text-xl text-gray-700 leading-relaxed space-y-4'>
-                <p>人生は産まれながらにして不平等だ。</p>
-                <p>
-                  けど、
-                  <span className='font-bold text-orange-600'>
-                    「学びの可能性」
-                  </span>
-                  であれば平等に近づけられるはず。
-                </p>
-                <p>自分の意志さえあれば。</p>
-                <p className='font-bold text-2xl pt-4'>
-                  学ぶことは自立すること。
-                  <br />
-                  人生を豊かにすること。
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>｀｀
 
         {/* Business Section */}
         <section className='py-24'>
@@ -297,7 +305,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Service Section */}
         <section className='py-24 bg-white/70 backdrop-blur-sm'>
           <div className='container mx-auto px-4'>
@@ -313,7 +320,7 @@ export default function Home() {
               {services.map((service, index) => (
                 <div
                   key={index}
-                  className='bg-white rounded-2xl shadow-md overflow-hidden group'
+                  className='bg-white rounded-2xl shadow-md overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300'
                 >
                   <div className='relative'>
                     <Image
@@ -338,14 +345,13 @@ export default function Home() {
             <div className='text-center mt-16'>
               <Link
                 href='/service'
-                className='inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-transform transform hover:scale-105'
+                className='inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-transform transform hover:scale-110'
               >
                 全てのサービスを見る
               </Link>
             </div>
           </div>
         </section>
-
         {/* News Section */}
         <section className='py-24 bg-white/70 backdrop-blur-sm'>
           <div className='container mx-auto px-4'>
